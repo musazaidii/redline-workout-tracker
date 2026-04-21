@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta name="description"
+        content="Track your workout split, log the weight you lift, and review monthly progress." />
+
+  <meta name="theme-color" content="#ff2d20" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Redline" />
+
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- <p>
+    Edit exercises, log the weight you lift, and check your progress at
+    the end of every month.
+  </p> -->
+
+  <div class="hero-actions">
+    <button id="install-button" type="button" class="install-button" hidden>
+      Install App
+    </button>
+
+    <!-- <p id="install-copy" class="install-copy">
+      Best on phone: open the hosted link, then add it to your home screen.
+    </p> -->
+  </div>
+
+  <div class="summary-grid">
+    <!-- Your content here -->
+  </div>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redline Workout Tracker</title>
+    <meta
+      name="description"
+      content="Track your workout split, log the weight you lift, and review monthly progress."
+    />
+    <meta name="theme-color" content="#ff2d20" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Redline" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="backdrop" aria-hidden="true"></div>
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Workout Split + Lift Log</p>
+        <h1>Redline Workout Tracker</h1>
+        <p class="hero-text">
+          Your weekly split is already loaded from the image you shared. Add or
+          edit exercises, log the weight you lift, and check your progress at
+          the end of every month.
+        </p>
+        <div class="hero-actions">
+          <button id="install-button" type="button" class="install-button" hidden>
+            Install App
+          </button>
+          <p id="install-copy" class="install-copy">
+            Best on phone: open the hosted link, then add it to your home screen.
+          </p>
+        </div>
+      </div>
+
+      <div class="summary-grid">
+        <article class="summary-card">
+          <span class="summary-label">Split Days</span>
+          <strong id="summary-days">0</strong>
+        </article>
+        <article class="summary-card">
+          <span class="summary-label">Exercises</span>
+          <strong id="summary-exercises">0</strong>
+        </article>
+        <article class="summary-card">
+          <span class="summary-label">Logs This Month</span>
+          <strong id="summary-logs">0</strong>
+        </article>
+        <article class="summary-card">
+          <span class="summary-label">Best Lift</span>
+          <strong id="summary-best">0 kg</strong>
+        </article>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel panel-wide">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">Plan</p>
+            <h2>Your Split</h2>
+          </div>
+          <p class="panel-copy">
+            Change any day, focus area, or exercise. Everything saves
+            automatically in your browser.
+          </p>
+        </div>
+
+        <form id="add-day-form" class="inline-form">
+          <label>
+            Day
+            <input
+              type="text"
+              name="dayName"
+              placeholder="Sunday"
+              maxlength="24"
+              required
+            />
+          </label>
+          <label>
+            Focus
+            <input
+              type="text"
+              name="focus"
+              placeholder="Legs / Core"
+              maxlength="60"
+              required
+            />
+          </label>
+          <button type="submit">Add Day</button>
+        </form>
+
+        <div id="split-list" class="split-grid"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">Log</p>
+            <h2>Record a Lift</h2>
+          </div>
+          <p class="panel-copy">
+            Store the weight for each exercise so you can review your growth by
+            month.
+          </p>
+        </div>
+
+        <form id="log-form" class="stack-form">
+          <div class="form-grid">
+            <label>
+              Date
+              <input type="date" name="date" required />
+            </label>
+
+            <label>
+              Unit
+              <select name="unit" id="unit-select">
+                <option value="kg">kg</option>
+                <option value="lb">lb</option>
+              </select>
+            </label>
+
+            <label>
+              Day
+              <select name="dayId" id="day-select" required></select>
+            </label>
+
+            <label>
+              Exercise
+              <select name="exerciseId" id="exercise-select" required></select>
+            </label>
+
+            <label>
+              Weight
+              <input
+                type="number"
+                name="weight"
+                step="0.5"
+                min="0"
+                placeholder="60"
+                required
+              />
+            </label>
+
+            <label>
+              Reps
+              <input
+                type="number"
+                name="reps"
+                step="1"
+                min="1"
+                placeholder="8"
+              />
+            </label>
+          </div>
+
+          <label>
+            Notes
+            <textarea
+              name="notes"
+              rows="3"
+              placeholder="Felt strong, last set was tough, increase next week..."
+            ></textarea>
+          </label>
+
+          <button type="submit" class="primary-button">Save Lift</button>
+        </form>
+
+        <div id="lift-hint" class="lift-hint"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head progress-head">
+          <div>
+            <p class="section-kicker">Results</p>
+            <h2>Monthly Progress</h2>
+          </div>
+          <div class="filters">
+            <label>
+              Month
+              <input type="month" id="month-picker" />
+            </label>
+            <label>
+              Chart Exercise
+              <select id="chart-exercise-select"></select>
+            </label>
+          </div>
+        </div>
+
+        <div class="progress-cards">
+          <article class="metric-card">
+            <span class="summary-label">Workout Days</span>
+            <strong id="metric-days">0</strong>
+          </article>
+          <article class="metric-card">
+            <span class="summary-label">Active Exercises</span>
+            <strong id="metric-active">0</strong>
+          </article>
+          <article class="metric-card">
+            <span class="summary-label">Improved</span>
+            <strong id="metric-improved">0</strong>
+          </article>
+          <article class="metric-card">
+            <span class="summary-label">Biggest Jump</span>
+            <strong id="metric-jump">0 kg</strong>
+          </article>
+        </div>
+
+        <div class="chart-shell">
+          <div class="chart-header">
+            <h3 id="chart-title">Progress Trend</h3>
+            <p id="chart-subtitle">Select an exercise to see your monthly line.</p>
+          </div>
+          <svg
+            id="progress-chart"
+            class="progress-chart"
+            viewBox="0 0 640 280"
+            role="img"
+            aria-label="Workout progress chart"
+          ></svg>
+        </div>
+
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>Exercise</th>
+                <th>Start</th>
+                <th>Latest</th>
+                <th>Best</th>
+                <th>Vs Last Month</th>
+                <th>Entries</th>
+              </tr>
+            </thead>
+            <tbody id="progress-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel panel-wide">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">History</p>
+            <h2>Recent Lift Entries</h2>
+          </div>
+          <p class="panel-copy">
+            Your newest entries stay here so you can quickly review and remove
+            mistakes.
+          </p>
+        </div>
+
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Exercise</th>
+                <th>Weight</th>
+                <th>Reps</th>
+                <th>Notes</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+  </html>
